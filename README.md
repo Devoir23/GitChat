@@ -27,10 +27,27 @@ Chunking is the process of breaking down a large input text into smaller pieces.
 ### 3. Embeddings Model
 
 The Embeddings Model represents text data as numerical vectors, which can be input into machine learning models. The embedding model is responsible for converting text into these vectors.
+```bash
+ model_name: str = "BAAI/bge-large-en-v1.5", device: str = "cuda"
+) -> HuggingFaceBgeEmbeddings:
+    model_kwargs = {"device": device}
+    encode_kwargs = {
+        "normalize_embeddings": True
+    }  # set True to compute cosine similarity
+    embedding_model = HuggingFaceBgeEmbeddings(
+        model_name=model_name,
+        model_kwargs=model_kwargs,
+        encode_kwargs=encode_kwargs,
+```
 
 ### 4. Vector Databases
 
 A Vector Database is a collection of pre-computed vector representations of text data for fast retrieval and similarity search. It includes capabilities like CRUD operations, metadata filtering, and horizontal scaling. By default, LlamaIndex uses a simple in-memory vector store that is great for quick experimentation.
+```bash
+# ====== Create vector store and upload indexed data ======
+Settings.embed_model = embed_model # we specify the embedding model to be used
+index = VectorStoreIndex.from_documents(docs)
+```
 
 ### 5. User Chat Interface
 
@@ -40,9 +57,6 @@ The User Chat Interface is a user-friendly interface that allows users to intera
 
 The Query Engine takes the query string, fetches relevant context, and sends both as a prompt to the Large Language Model (LLM) to generate a final natural language response. The LLM used here is Mistral-7B, which is served locally using Ollama. The final response is displayed in the user interface.
 ```bash
-from llama_index.llms.ollama import Ollama
-from llama_index.core import Settings
-
 # setting up the llm
 llm = Ollama(model="mistral", request_timeout=1000.0) 
 
@@ -107,7 +121,7 @@ we developed a Retrieval-Augmented Generation (RAG) application that allows you 
 
 We also delved into the concept of prompt engineering to refine and steer the responses of our LLM. These techniques can similarly be applied to anchor your LLM to various knowledge bases, such as documents, PDFs, videos, and more.
 
-**LlamaIndex** has a variety of data loaders. You can learn more about them [here]([https://link_to_llamaindex_data_loaders](https://docs.llamaindex.ai/en/stable/understanding/loading/loading/)).
+**LlamaIndex** has a variety of data loaders. You can learn more about them [here.](https://docs.llamaindex.ai/en/stable/understanding/loading/loading/)
    
 ## Acknowledgments
 - LlamaIndex
