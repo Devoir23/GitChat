@@ -1,14 +1,20 @@
-# Chat with Your Code - RAG Application
+# GitChat - RAG Application
 
 Transform your interaction with GitHub repositories through a natural language interface. This "Chat with your code" Retrieval-Augmented Generation (RAG) application simplifies code queries, making coding more intuitive and productive.
 
-![Demo Video](//link_to_demo_video)
+# Demo Video
+
+<a href="https://www.youtube.com/watch?v=5A47-m0MWiM" target="_blank">
+  <img src="https://img.youtube.com/vi/5A47-m0MWiM/0.jpg" alt="Demo Video" style="width:866px;height:480px;">
+</a>
+
 
 ## Key Architecture Components
 
 Building a robust RAG application involves several key components. The architecture diagram below illustrates how these components interact, followed by detailed descriptions of each component.
 
-![Architecture Diagram](//link_to_architecture_diagram)
+![image](https://github.com/Devoir23/GitChat/assets/83571014/f0df37da-b5a7-4487-bb04-f0e60ea4ab61)
+
 
 ### 1. Custom Knowledge Base
 
@@ -33,19 +39,38 @@ The User Chat Interface is a user-friendly interface that allows users to intera
 ### 6. Query Engine
 
 The Query Engine takes the query string, fetches relevant context, and sends both as a prompt to the Large Language Model (LLM) to generate a final natural language response. The LLM used here is Mistral-7B, which is served locally using Ollama. The final response is displayed in the user interface.
+```bash
+from llama_index.llms.ollama import Ollama
+from llama_index.core import Settings
+
+# setting up the llm
+llm = Ollama(model="mistral", request_timeout=1000.0) 
+
+# ====== Setup a query engine on the index previously created ======
+Settings.llm = llm # specifying the llm to be used
+query_engine = index.as_query_engine(streaming=True, similarity_top_k=4)
+```
 
 ### 7. Prompt Template
 
 A custom prompt template is used to refine the response from the LLM and include the necessary context.
+```bash
+qa_prompt_tmpl_str = (
+            "Context information is below.\n"
+            "---------------------\n"
+            "{context_str}\n"
+            "---------------------\n"
+            "Given the context information above I want you to think step by step to answer the query in a crisp manner, incase case you don't know the answer say 'I don't know!'.\n"
+            "Query: {query_str}\n"
+            "Answer: "
+            )
 
-## Conclusion
+qa_prompt_tmpl = PromptTemplate(qa_prompt_tmpl_str)
+query_engine.update_prompts({"response_synthesizer:text_qa_template": qa_prompt_tmpl})
 
-we developed a Retrieval-Augmented Generation (RAG) application that allows you to "Chat with your code." Throughout this process, we explored LlamaIndex, the go-to library for building RAG applications, and Ollama for locally serving LLMs.
-
-We also delved into the concept of prompt engineering to refine and steer the responses of our LLM. These techniques can similarly be applied to anchor your LLM to various knowledge bases, such as documents, PDFs, videos, and more.
-
-LlamaIndex has a variety of data loaders. You can learn more about them [here](https://link_to_llamaindex_data_loaders).
-
+response = query_engine.query('What is this repository about?')
+print(response)
+```
 ## Getting Started
 
 ### Prerequisites
@@ -65,7 +90,7 @@ cd GitChat
 ```
 2. Install the required packages:
 ```bash
-streamlit run app.py
+pip install -r requirements.txt
 ```
 ## Running the Application
 1. Start the Streamlit app:
@@ -76,14 +101,16 @@ streamlit run app.py
 
 ## Conclusion
 
-In this studio, we developed a Retrieval-Augmented Generation (RAG) application that allows you to "Chat with your code." Throughout this process, we explored LlamaIndex, the go-to library for building RAG applications, and Ollama for locally serving LLMs.
+we developed a Retrieval-Augmented Generation (RAG) application that allows you to "**Chat with your code.**" Throughout this process, we explored LlamaIndex, the go-to library for building RAG applications, and Ollama for locally serving LLMs.
+
+**Here we are running this application on RTX 3050 GPU. It may vary in your device based on specifications of your device.**
 
 We also delved into the concept of prompt engineering to refine and steer the responses of our LLM. These techniques can similarly be applied to anchor your LLM to various knowledge bases, such as documents, PDFs, videos, and more.
 
-LlamaIndex has a variety of data loaders. You can learn more about them [here](https://link_to_llamaindex_data_loaders).
+**LlamaIndex** has a variety of data loaders. You can learn more about them [here]([https://link_to_llamaindex_data_loaders](https://docs.llamaindex.ai/en/stable/understanding/loading/loading/)).
    
 ## Acknowledgments
-LlamaIndex
-Ollama
-Mistral-7B
+- LlamaIndex
+- Ollama
+- Mistral-7B
 
