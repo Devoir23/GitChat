@@ -128,3 +128,8 @@ We also delved into the concept of prompt engineering to refine and steer the re
 - Ollama
 - Mistral-7B
 
+## Connect with me
+<p align="left">
+<a href="https://twitter.com/kartavyarb" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="kartavyarb" height="30" width="40" /></a>
+<a href="https://instagram.com/kartavya.here" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="kartavya.here" height="30" width="40" /></a>
+</p>
